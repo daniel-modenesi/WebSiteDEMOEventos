@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Eventos</title>
+    
+  <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+  <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+  <link rel="stylesheet" href="css/style.css">
+
+    <script  src="js/jquery.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+</head>
+
+<body>
+    <div class="header"></div>  
+        <div class="main">
+                <div id="jsGrid"></div>
+        </div> <!-- /form -->
+    <div class="footer"></div>
+
+
+</body>
+<script>
+        
+
+        var aux = ""
+
+       $.ajax({
+            type: "GET",
+            dataType: "JSON",
+            url: "https://localhost:44389/api/Usuarios",
+            success: function(data){
+                aux = data;
+                //console.log(aux);
+            }
+        });
+        
+        //alert(JSON.stringify(aux));
+
+        $("#jsGrid").jsGrid({
+            height: "auto",
+            width: "60%",
+
+            sorting: true,
+            paging: false,
+            autoload: true,
+           
+            controller: {
+                loadData: function (filter) {
+                    console.log(filter);
+                    return $.ajax({
+                        type: "GET",
+                        url: "https://localhost:44389/api/Eventos",
+                        data: filter,
+                        dataType: "json"
+                    });
+                }
+            },
+           
+            fields: [
+             { name: "idEvento", type: "text", width: 150 },
+             { name: "nome", type: "text", width: 150 },
+             { name: "descricao", type: "text", width: 150 },
+             { name: "preco", type: "text", width: 150 },
+            ]
+        });
+    </script>
+</html>
